@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail <%= motor.title %></title>
-</head>
-<body>
+<% layout('layouts/app') %>
     <h1><%= motor.title %></h1>
     <h2><%= motor.description %></h2>
     <form action="/pages/<%= motor._id %>?_method=DELETE" method="POST" style="display: inline!important;">
@@ -13,6 +6,3 @@
     </form>
     <a href="/pages/<%= motor._id %>/editForm">edit</a>
     <a href="/pages">all motor</a>
-
-</body>
-</html>
