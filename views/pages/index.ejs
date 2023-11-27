@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page - All Motors</title>
+</head>
+<body>
+    <!-- Link to Add Motor Form -->
+    <a href="/pages/post">Add Motor</a>
+
+    <!-- Heading for All Motors -->
+    <h1>All Motors</h1>
+
+    <!-- List of Motors -->
+    <ul>
+        <% for(const motor of motors){ %>
+            <li><a href="/pages/<%= motor._id %>"><%= motor.title %></a></li>
+        <% } %>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Motors</title>
+</head>
+<body>
+    <h1>Add Place</h1>
+    <form action="/pages" method="POST">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" name="motor[title]" id="title">
+        </div>
+
+        <div class="form-group">
+            <label for="licensePlate">License Plate</label>
+            <input type="text" name="motor[licensePlate]">
+        </div>
+
+        <div class="form-group">
+            <label for="model">Model</label>
+            <input type="text" name="motor[model]">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" name="motor[description]">
+        </div>
+
+        <div class="form-group">
+            <label for="dateTime">Date - Time</label>
+            <input type="datetime-local" name="motor[dateTime]" id="dateTime">
+        </div>
+
+        <div class="form-group">
+            <label for="image">Image URL</label>
+            <input type="text" name="motor[image]">
+        </div>
+
+        <div class="form-group">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</body>
+</html>
