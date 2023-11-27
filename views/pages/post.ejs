@@ -1,38 +1,43 @@
 <% layout('layouts/app') %>
-    <h1>Add Place</h1>
-    <form action="/pages" method="POST">
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" name="motor[title]" id="title">
+<div class="container">
+    <h1 class="text-center mt-5">Add Motor</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="/pages" method="POST">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" name="motor[title]" id="title">
+                </div>
+        
+                <div class="mb-3">
+                    <label for="licensePlate" class="form-label">License Plate</label>
+                    <input type="text" class="form-control" name="motor[licensePlate]">
+                </div>
+        
+                <div class="mb-3">
+                    <label for="model" class="form-label">Model</label>
+                    <input type="text" class="form-control" name="motor[model]">
+                </div>
+        
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea  id="description" class="form-control" name="motor[description]"></textarea>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="dateTime" class="form-label">Date - Time</label>
+                    <input type="datetime-local" class="form-control" name="motor[dateTime]" id="dateTime">
+                </div>
+        
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image URL</label>
+                    <input type="text" class="form-control" name="motor[image]">
+                </div>
+        
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
         </div>
-
-        <div class="form-group">
-            <label for="licensePlate">License Plate</label>
-            <input type="text" name="motor[licensePlate]">
-        </div>
-
-        <div class="form-group">
-            <label for="model">Model</label>
-            <input type="text" name="motor[model]">
-        </div>
-
-        <div class="form-group">
-            <label for="description">Description</label>
-            <input type="text" name="motor[description]">
-        </div>
-
-        <div class="form-group">
-            <label for="dateTime">Date - Time</label>
-            <input type="datetime-local" name="motor[dateTime]" id="dateTime">
-        </div>
-
-        <div class="form-group">
-            <label for="image">Image URL</label>
-            <input type="text" name="motor[image]">
-        </div>
-
-        <div class="form-group">
-            <button type="submit">Submit</button>
-        </div>
-    </form>
-
+    </div>
+</div>

@@ -7,7 +7,7 @@ const motorSchema = new Schema ({
     model:String,
     description: String,
     dateTime:String,
-    Image: String
+    image: String
 
 })
 

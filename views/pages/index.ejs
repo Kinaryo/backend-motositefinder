@@ -7,9 +7,24 @@
     <h1>All Motors</h1>
 
     <!-- List of Motors -->
-    <ul>
-        <% for(const motor of motors){ %>
-            <li><a href="/pages/<%= motor._id %>"><%= motor.title %></a></li>
-        <% } %>
-    </ul>
-
+    <% for(const motor of motors){ %>
+       <div class="card mb-3">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="<%= motor.image %>" alt="<%= motor.title  %>" class="img-fluid">
+            </div>
+            <div class="col-md-8"> <!-- Perbaikan pada class di sini -->
+                <div class="card-body">
+                    <h5 class="card-title"><%= motor.title  %></h5>
+                    <p class="card-text"><%= motor.licensePlate %></p>
+                    <p class="card-text"><%= motor.model %></p>
+                    <p class="card-text"><%= motor.dateTime %></p>
+                    <p class="card-text"><%= motor.description %></p>
+                    <a href="/pages/<%= motor._id %>/" class="btn btn-primary">View <%= motor.title  %></a>
+                </div>
+            </div>
+        </div>
+       </div>
+    <% } %>
+</body>
+</html>
