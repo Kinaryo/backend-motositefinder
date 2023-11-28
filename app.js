@@ -4,6 +4,7 @@ const methodOverride = require('method-override')
 const mongoose = require('mongoose')
 const path = require ('path')
 const app = express();
+const wrapAsync = require('./utils/wrapAsync')
 
 
 // models
@@ -30,10 +31,10 @@ app.get('/',(req,res)=>{
     res.render('home')
 })
 
-app.get('/pages',async(req,res)=>{
+app.get('/pages', wrapAsync(async(req,res)=>{
     const motors = await Motor.find()
     res.render('pages/index', {motors})
-})
+}))
 
 // create/form 
 app.get('/pages/post', (req,res)=>{
@@ -41,43 +42,40 @@ app.get('/pages/post', (req,res)=>{
 })
 
 // submit post
-app.post('/pages',async(req,res,next)=>{
-    try{
+app.post('/pages', wrapAsync(async(req,res,next)=>{
     const motor = new Motor(req.body.motor)
     await motor.save()
     res.redirect('/pages')
-    }catch(error){
-        next(error)
-    }
     
-})
+}))
 
 // details
-app.get('/pages/:id', async (req,res)=>{
+app.get('/pages/:id', wrapAsync(async (req,res)=>{
     const {id} = req.params
     const motor = await Motor.findById(id)
     res.render('pages/detail',{motor})
 
-})
+}))
 
 // menuju ke halaman edit 
-app.get('/pages/:id/editForm', async(req,res)=>{
+app.get('/pages/:id/editForm',wrapAsync(async(req,res)=>{
     const motor = await Motor.findById(req.params.id);
     res.render('pages/editForm', {motor})
-})
+}))
 // mengirim dari halaman edit
-app.put('/pages/:id', async(req,res)=>{
+app.put('/pages/:id',wrapAsync(async(req,res)=>{
     const {id} = req.params
     const motor = await Motor.findByIdAndUpdate(id,{...req.body.motor})
     res.redirect('/pages')
 
-})
+}))
 
 // delete motor 
-app.delete('/pages/:id',async(req,res)=>{
+app.delete('/pages/:id',wrapAsync(async(req,res)=>{
     await Motor.findByIdAndDelete(req.params.id)
     res.redirect('/pages')
-})
+}))
+
 
 
 // middleware untuk menangani suatu error
