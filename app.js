@@ -41,10 +41,15 @@ app.get('/pages/post', (req,res)=>{
 })
 
 // submit post
-app.post('/pages',async(req,res)=>{
+app.post('/pages',async(req,res,next)=>{
+    try{
     const motor = new Motor(req.body.motor)
     await motor.save()
     res.redirect('/pages')
+    }catch(error){
+        next(error)
+    }
+    
 })
 
 // details
@@ -72,6 +77,12 @@ app.put('/pages/:id', async(req,res)=>{
 app.delete('/pages/:id',async(req,res)=>{
     await Motor.findByIdAndDelete(req.params.id)
     res.redirect('/pages')
+})
+
+
+// middleware untuk menangani suatu error
+app.use((err,req,res,next)=>{
+    res.status(500).send('Something broke')
 })
 app.listen(5000,()=>{
     console.log(`server is running on http://127.0.0.1:5000`)
