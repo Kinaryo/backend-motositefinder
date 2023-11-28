@@ -1,6 +1,7 @@
 const ejsMate = require('ejs-mate')
 const express = require('express');
 const ErrorHandler = require('./utils/ErrorHandler')
+const Joi = require('joi')
 const methodOverride = require('method-override')
 const mongoose = require('mongoose')
 const path = require ('path')
@@ -44,6 +45,23 @@ app.get('/pages/post', (req,res)=>{
 
 // submit post
 app.post('/pages', wrapAsync(async(req,res,next)=>{
+    const motorSchema = Joi.object({
+        motor: Joi.object({
+            title: Joi.string().required,
+            licensePlate: Joi.string().required,
+            model: Joi.string().required,
+            description: Joi.string().required,
+            dateTime: Joi.string().required,
+            image: Joi.string().required,
+
+        }).required()
+    })
+
+    const {error} = motorSchema.validate(req.body)
+    if(error){
+        console.log(error)
+        return next(new ErrorHandler(error.details[0].message,400))
+    }
     const motor = new Motor(req.body.motor)
     await motor.save()
     res.redirect('/pages')
