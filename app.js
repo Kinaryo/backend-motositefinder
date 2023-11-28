@@ -1,5 +1,6 @@
 const ejsMate = require('ejs-mate')
 const express = require('express');
+const ErrorHandler = require('./utils/ErrorHandler')
 const methodOverride = require('method-override')
 const mongoose = require('mongoose')
 const path = require ('path')
@@ -77,10 +78,17 @@ app.delete('/pages/:id',wrapAsync(async(req,res)=>{
 }))
 
 
+//melihat eror sementara 
+app.all('*',(req,res,next)=>{
+    next(new ErrorHandler('Page not Faund',404))
+})
 
 // middleware untuk menangani suatu error
 app.use((err,req,res,next)=>{
-    res.status(500).send('Something broke')
+    const {statusCode = 500 } = err;
+    if(!err.message) err.message = "oh no, Something went wrong"
+    res.status(statusCode).render('error',{err})
+
 })
 app.listen(5000,()=>{
     console.log(`server is running on http://127.0.0.1:5000`)
