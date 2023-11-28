@@ -6,7 +6,10 @@ const motorSchema = new Schema ({
     licensePlate: String,
     model:String,
     description: String,
-    dateTime:String,
+    dateTime: {
+        type: Date, // Pastikan tipe datanya adalah Date
+        default: Date.now,
+      },
     image: String
 
 })

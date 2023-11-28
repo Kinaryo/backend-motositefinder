@@ -33,6 +33,35 @@ app.get('/',(req,res)=>{
     res.render('home')
 })
 
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+  }
+  
+  app.get('/pages', wrapAsync(async (req, res) => {
+      let motors;
+  
+      // Handling search
+      if (req.query.search) {
+        const searchRegex = new RegExp(escapeRegex(req.query.search), 'gi');
+        motors = await Motor.find({ title: searchRegex });
+      } else {
+        // Handling filter
+        if (req.query.sortBy === 'terbaru') {
+          motors = await Motor.find().sort({ dateTime: -1 });
+        } else if (req.query.sortBy === 'terlama') {
+          motors = await Motor.find().sort({ dateTime: 1 });
+        } else {
+          motors = await Motor.find();
+        }
+      }
+  
+      res.render('pages/index', { motors });
+    })
+  );
+
+
+
+
 app.get('/pages', wrapAsync(async(req,res)=>{
     const motors = await Motor.find()
     res.render('pages/index', {motors})
