@@ -15,7 +15,7 @@ const router = express.Router();
 
 
 
-router.get('/Searchpages', wrapAsync(constrollersMotor.search));
+router.get('/Search', wrapAsync(constrollersMotor.search));
 //  mendapatkan semua data motor dalam bentuk JSON
 router.get('/', wrapAsync(constrollersMotor.index));
 // mendapatkan detail motor berdasarkan ID dalam bentuk JSON

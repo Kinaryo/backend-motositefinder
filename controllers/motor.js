@@ -117,9 +117,9 @@ module.exports.update = async (req, res) => {
 module.exports.destroy = async (req, res) => {
   const {id} = req.params
   const motor =  await Motor.findById(id)
-  if(motor.images.length >0 ){
-    motor.images.forEach(image =>{
-      fs.unlink(image.url, err => new ExpressError(err))
+  if(motor.imageURL.length >0 ){
+    motor.imageURL.forEach(image =>{
+      fs.unlink(imageURL, err => new ExpressError(err))
     })
    }
    await motor.deleteOne();
