@@ -25,5 +25,17 @@
                 </div>
             </div>
         </div>
+        <div class="col-6">
+            <div class="border p-3 rounded">
+                <h3>Comments</h3>
+                <form action="/pages<%= motor._id %>/comments" method="POST">
+                <div class="form-group">
+                    <textarea name="comment[body]" id="body" cols="20" rows="5" class="form-control" placeholder="komentar..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-success mt-2">Send</button>
+            </form>
+            </div>
+        </div>
+        
     </div>
 </div>
