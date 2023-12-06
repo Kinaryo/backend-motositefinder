@@ -52,7 +52,26 @@ module.exports.form = (req, res) => {
     res.json({ message: 'Halaman new post' });
 };
 
-// module.exports.store = async (req, res) => {
+module.exports.store = async (req, res) => {
+    const imageUrl = await req.file.path;
+    const motor = new Motor(req.body.motor);
+    motor.author = req.user._id;
+    motor.imageURL = imageUrl;
+    await motor.save();
+    res.json({motor});
+}
+
+
+
+
+
+
+
+
+
+
+
+// async (req, res) => {
 //   const images = req.files.map(file =>({
 //     url : file.path,
 //     filename : file.filename,
@@ -64,6 +83,11 @@ module.exports.form = (req, res) => {
 //     req.flash('success_msg','Selamat, anda berhasil menambahkan data')
 //     res.json({ message: 'Motor added successfully', motor });
 // }
+
+
+
+
+
 // menuju halaman edit 
 module.exports.edit = async (req, res) => {
     const motor = await Motor.findById(req.params.id);

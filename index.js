@@ -21,18 +21,35 @@ const LocalStrategy = require('passport-local')
 // models
 const User =require('./models/user')
 
+// localhost 
+// mongoose.connect('mongodb://127.0.0.1/motositefinder')
+// .then((result)=>{
+//     console.log('connected to mongodb')
+// }).catch((err)=>{
+//     console.log(err)
+// })
 
-mongoose.connect('mongodb://127.0.0.1/motositefinder')
-.then((result)=>{
-    console.log('connected to mongodb')
-}).catch((err)=>{
-    console.log(err)
-})
+// Server
+ const PORT = process.env.PORT || 3000;
+mongoose.set('strictQuery', false);
+const connectDB = async () => {
+    try {
+        const conn = await mongoose.connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
+        console.error('Error connecting to MongoDB:', error.message);
+        process.exit(1);
+    }
+};
 
 const Motor = require('./models/motor');
 const Comment = require('./models/comment');
 const { motorSchema } = require('./schemas/motor');
 const { commentSchema } = require('./schemas/comment'); // Fixed import path
+const { Server } = require('http');
 
 app.use(cors());
 app.engine('ejs', ejsMate);
@@ -97,12 +114,12 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { err });
 });
 
-// connectDB().then(() => {
-//     app.listen(PORT, () => {
-//         console.log(`Listening On Port ${PORT}`);
-//     });
-// });
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Listening On Port ${PORT}`);
+    });
+});
 
-app.listen(5000,()=>{
-    console.log(`server is running on http://127.0.0.1:5000`)
-})
+// app.listen(5000,()=>{
+//     console.log(`server is running on http://127.0.0.1:5000`)
+// })
