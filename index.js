@@ -10,6 +10,7 @@ const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
+const bodyParser = require('body-parser');
 
 const wrapAsync = require('./utils/wrapAsync');
 const isValidObjectId = require('./middlewares/isValidObjectId')
@@ -51,15 +52,16 @@ const { motorSchema } = require('./schemas/motor');
 const { commentSchema } = require('./schemas/comment'); // Fixed import path
 const { Server } = require('http');
 
-const corsOptions = {
-    origin : 'http://localhost:8080',
-    method : 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials : true,
-    optionsSuccessStatus : 204,
-}
+// const corsOptions = {
+//     origin : 'http://localhost:8080',
+//     method : 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//     credentials : true,
+//     optionsSuccessStatus : 204,
+// }
 
 
-app.use(cors(corsOptions));
+app.use(cors());
+app.use(bodyParser.json());
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
