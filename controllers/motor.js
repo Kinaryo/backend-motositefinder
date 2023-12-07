@@ -55,7 +55,7 @@ module.exports.form = (req, res) => {
 module.exports.store = async (req, res) => {
     const imageUrl = await req.file.path;
     const motor = new Motor(req.body.motor);
-    motor.author = req.user._id;
+    // motor.author = req.user._id;
     motor.imageURL = imageUrl;
     await motor.save();
     res.json({motor});
