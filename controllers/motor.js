@@ -53,24 +53,17 @@ module.exports.form = (req, res) => {
 };
 
 module.exports.store = async (req, res) => {
-    const imageUrl = await req.file.path;
+  try {
+    const imageUrl = req.file.path;
     const motor = new Motor(req.body.motor);
-    // motor.author = req.user._id;
     motor.imageURL = imageUrl;
     await motor.save();
-    res.json({motor});
-}
-
-
-
-
-
-
-
-
-
-
-
+    res.json({ motor });
+  } catch (error) {
+    console.error('Error storing motor:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 // async (req, res) => {
 //   const images = req.files.map(file =>({
 //     url : file.path,
@@ -85,34 +78,48 @@ module.exports.store = async (req, res) => {
 // }
 
 
-
-
-
 // menuju halaman edit 
 module.exports.edit = async (req, res) => {
     const motor = await Motor.findById(req.params.id);
     res.json({ message: 'Halaman edit', motor });
 };
-
 module.exports.update = async (req, res) => {
-  const {id} = req.params
-  const motor =  await Motor.findByIdAndUpdate(id,{...req.body.motor})
+  const { id } = req.params;
 
-  if(req.files && req.files.length >0 ){
-      motor.images.forEach(image =>{
-     fs.unlink(image.url, err => new ExpressError(err))
-   })
-       const images = req.files.map(file =>({
-       url : file.path,
-       filename: file.filename
-   }));
+  try {
+    let motor = await Motor.findById(id);
 
-   motor.images = images;
-   await motor.save();
-  }
-    req.flash('success_msg','Anda berhasil meng-update data');
+    if (!motor) {
+      return res.status(404).json({ error: 'Motor not found' });
+    }
+
+    motor.set(req.body.motor); // Use set method to update the motor object
+
+    // Check if req.file is defined before accessing its properties
+    if (req.file && req.file.path) {
+      const imageUrl = req.file.path;
+      motor.imageURL = imageUrl;
+    }
+
+    await motor.save();
+
+    req.flash('success_msg', 'Anda berhasil meng-update data');
     res.json({ message: 'Motor updated successfully', motor });
-}
+  } catch (error) {
+    console.error('Error updating motor:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+  // if(req.files && req.files.length >0 ){
+  //     motor.images.forEach(image =>{
+  //    fs.unlink(image.url, err => new ExpressError(err))
+  //  })
+  //      const images = req.files.map(file =>({
+  //      url : file.path,
+  //      filename: file.filename
+  //  }));
 
 module.exports.destroy = async (req, res) => {
   const {id} = req.params
