@@ -52,14 +52,19 @@ const { motorSchema } = require('./schemas/motor');
 const { commentSchema } = require('./schemas/comment'); // Fixed import path
 const { Server } = require('http');
 
-const corsOptions = {
-    origin : ['*'],
-    method : ['GET','POST'],
-    allowedHeaders : ['Content-type', 'application/json']
-}
+// const corsOptions = {
+//     origin : ['*'],
+//     method : ['GET','POST'],
+//     allowedHeaders : ['Content-type', 'application/json']
+// }
 
-
-app.use(cors(corsOptions));
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+  });
+app.use(cors());
 app.use(bodyParser.json());
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
