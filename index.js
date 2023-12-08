@@ -75,7 +75,7 @@ app.use(session(
     {
         secret: 'this-is-a-secret-key',
         resave: false,
-        saveUnitialized : false,
+        saveUninitialized : false,
         cookie:{
             httpOnly: true,
             expires: Date.now()+1000*60*60*24*7,

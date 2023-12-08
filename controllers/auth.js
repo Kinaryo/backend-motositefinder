@@ -6,8 +6,8 @@ module.exports.registerForm = async (req, res) => {
 
 module.exports.register = async (req, res) => {
     try {
-        const { email, username, password, name } = req.body; // Menambahkan name dari req.body
-        const user = new User({ email, username, name }); // Menambahkan name ke objek user
+        const { email, username, password, name } = req.body;
+        const user = new User({ email, username, name });
         const registerUser = await User.register(user, password);
 
         req.login(registerUser, (err) => {
