@@ -53,8 +53,8 @@ const { commentSchema } = require('./schemas/comment'); // Fixed import path
 const { Server } = require('http');
 
 const corsOptions = {
-    origin : '*',
-    method : ['GET,POST'],
+    origin : ['*'],
+    method : ['GET','POST'],
     allowedHeaders : ['Content-type', 'Authorization']
 }
 
