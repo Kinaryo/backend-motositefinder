@@ -55,7 +55,7 @@ const { Server } = require('http');
 const corsOptions = {
     origin : ['*'],
     method : ['GET','POST'],
-    allowedHeaders : ['Content-type', 'Authorization']
+    allowedHeaders : ['Content-type', 'application/json']
 }
 
 
