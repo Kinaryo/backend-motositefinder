@@ -14,7 +14,6 @@ const motorSchema = new Schema ({
       },
       imageURL: {
         type: String,
-        required: true,
     },
     author : {
       type: Schema.Types.ObjectId,
