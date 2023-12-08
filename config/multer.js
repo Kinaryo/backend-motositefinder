@@ -23,6 +23,7 @@ const upload = multer({
             cb(null, true);
         } else {
             cb(new ExpressError('only images are allowed.', 405));
+            return cb(error);
         }
     }
 });
