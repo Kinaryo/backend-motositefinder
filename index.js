@@ -52,15 +52,14 @@ const { motorSchema } = require('./schemas/motor');
 const { commentSchema } = require('./schemas/comment'); // Fixed import path
 const { Server } = require('http');
 
-// const corsOptions = {
-//     origin : 'http://localhost:8080',
-//     method : 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//     credentials : true,
-//     optionsSuccessStatus : 204,
-// }
+const corsOptions = {
+    origin : '*',
+    method : ['GET,POST'],
+    allowedHeaders : ['Content-type', 'Authorization']
+}
 
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
