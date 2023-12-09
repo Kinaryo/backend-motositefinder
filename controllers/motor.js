@@ -64,6 +64,7 @@ module.exports.store = async (req, res) => {
     const motor = new Motor(motorData);
 
     // Simpan motor ke MongoDB
+    motor.author = req.user._id
     await motor.save();
 
     res.json({ motor });

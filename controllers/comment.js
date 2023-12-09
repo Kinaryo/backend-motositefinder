@@ -5,7 +5,7 @@ module.exports.store = async (req, res) => {
    
     const {motor_id} = req.params
     const comment = new Comment(req.body.comment);
-    // comment.author = req.user._id;
+    comment.author = req.user._id;
     await comment.save();
 
     const motor = await Motor.findById(motor_id);
