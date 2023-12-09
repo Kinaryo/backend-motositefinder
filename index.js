@@ -44,9 +44,10 @@ const Comment = require('./models/comment');
 const { motorSchema } = require('./schemas/motor');
 const { commentSchema } = require('./schemas/comment'); // Fixed import path
 const { Server } = require('http');
+
 const corsOptions = {
     origin : ['*'],
-    method : ['GET','POST'],
+    method : ['*'],
     allowedHeaders : ['Content-type', 'Authorization']
 }
 
