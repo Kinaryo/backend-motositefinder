@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const User = require('../models/user');
 
@@ -29,27 +30,59 @@ module.exports.loginForm = (req, res) => {
 //     res.status(200).json({ success: true, message: 'Login berhasil' });
 // };
 
-module.exports.login = async (req, res) => {
-    try {
-        const { username, password } = req.body;
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const { User, Motor } = require('../models');
 
-        // Lakukan proses autentikasi user
+module.exports.login = async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
         const user = await User.findOne({ username });
-        if (!user || !(await user.verifyPassword(password))) {
-            return res.status(401).json({ success: false, message: 'Username atau password salah' });
+
+        if (!user) {
+            return res.status(404).json({
+                status: "Failed",
+                msg: `Username not registered`
+            });
         }
 
-        // Jika autentikasi berhasil, buat token JWT
-        const payload = { user_id: user._id, username: user.username };
-        const secretKey = 'motositefindr123'; // Ganti dengan kunci rahasia yang aman
-        const token = jwt.sign(payload, secretKey, { expiresIn: '1h' }); // Tambahkan opsi expiresIn jika diperlukan
+        const isValidPassword = bcrypt.compareSync(password, user.password);
 
-        // Kirim token sebagai respons
-        res.status(200).json({ success: true, message: 'Login berhasil', token });
+        if (isValidPassword) {
+            const payload = {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                username: user.username,
+            };
+
+            const secretKey = 'motositefindr123';
+            const token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
+
+            // Query Motor setelah berhasil login (contoh)
+            const motors = await Motor.find({ userId: user.id }, { id: 1, title: 1 });
+
+            res.status(200).json({
+                success: true,
+                message: 'Login berhasil',
+                token,
+                motors
+            });
+        } else {
+            res.status(401).json({
+                status: "Failed",
+                msg: `Invalid password`
+            });
+        }
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
 };
+
 
 
 

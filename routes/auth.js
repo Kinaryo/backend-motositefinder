@@ -15,6 +15,7 @@ router.post('/register', wrapAsync(controllersAuth.register));
 router.get('/login', controllersAuth.loginForm);
 
 router.post('/login', passport.authenticate('local', {
+    failureRedirect: '/login',
     failureFlash: {
         type: 'error_msg',
         msg: 'Masukkan password atau username dengan benar',
