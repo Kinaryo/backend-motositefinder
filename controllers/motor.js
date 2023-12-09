@@ -195,7 +195,12 @@ module.exports.update = async (req, res) => {
       if (Array.isArray(motor.imageURL) && motor.imageURL.length > 0) {
         await Promise.all(
           motor.imageURL.map(async (image) => {
-            await fs.unlink(image);
+            try {
+              await fs.unlink(image);
+            } catch (unlinkError) {
+              // Tangani error unlink, misalnya log error tersebut
+              console.error(`Error unlinking image: ${unlinkError.message}`);
+            }
           })
         );
       }
