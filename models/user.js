@@ -15,4 +15,7 @@ const userSchema = new Schema({
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' })
+userSchema.methods.verifyPassword = async function(candidatePassword) {
+    return this.authenticate(candidatePassword);
+};
 module.exports = mongoose.model('User', userSchema);
