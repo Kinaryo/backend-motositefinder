@@ -17,22 +17,8 @@ module.exports.store = async (req, res) => {
 
 module.exports.destroy = async (req, res) => {
     const { motor_id, comment_id } = req.params;
-
-    try {
-        // Hapus komentar dari array komentar pada objek motor
-        await Motor.findByIdAndUpdate(motor_id, { $pull: { comments: { _id: comment_id } } });
-
-        // Hapus komentar sepenuhnya
-        const deletedComment = await Comment.findByIdAndRemove(comment_id);
-
-        if (!deletedComment) {
-            return res.status(404).json({ error: 'Komentar tidak ditemukan' });
-        }
-
-        const msg = req.flash('success_msg', 'Komentar berhasil dihapus');
-        res.json({ message: 'Berhasil menghapus komentar', success_msg: msg });
-    } catch (error) {
-        console.error('Error menghapus komentar:', error.message);
-        res.status(500).json({ error: 'Error Server Internal' });
-    }
-};
+    await Motor.findByIdAndUpdate(motor_id, { $pull: { comments: { _id: comment_id } } });
+    await Comment.findByIdAndDelete(comment_id);
+    const msg = req.flash('success_msg','comment berhasil dihapus')
+    res.json({message: `Success Delete Comment`, Motor})
+}
