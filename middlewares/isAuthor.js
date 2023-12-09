@@ -12,14 +12,25 @@ module.exports.isAuthorMotor = async(req,res,next)=>{
     }
     next();
 }
-module.exports.isAuthorComment = async(req,res,next)=>{
-    const {motor_id,comment_id} = req.params
+module.exports.isAuthorComment = async (req, res, next) => {
+  const { comment_id } = req.params;
 
-    let comment = await Comment.findById(comment_id);
+  try {
+    const comment = await Comment.findById(comment_id);
 
-    if (!comment.author.equals(req.user._id)){
-      req.flash('error_msg', 'Not authorized');
-      return (res.redirect(`/pages/${motor_id}`))
+    // Pastikan komentar ditemukan
+    if (!comment) {
+      return res.status(404).json({ error: 'Komentar tidak ditemukan' });
     }
-    next();
-}
+
+    // Pastikan properti 'author' ada sebelum mencoba mengaksesnya
+    if (!comment.author || !comment.author.equals(req.user._id)) {
+      return res.status(403).json({ error: 'Anda tidak diizinkan untuk melakukan ini' });
+    }
+
+    next(); // Lanjutkan eksekusi jika pengguna adalah penulis komentar
+  } catch (error) {
+    console.error('Error pada middleware isAuthorComment:', error.message);
+    res.status(500).json({ error: 'Error Server Internal' });
+  }
+};
