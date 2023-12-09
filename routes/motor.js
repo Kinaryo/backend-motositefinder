@@ -35,6 +35,6 @@ router.put('/:id/edit/update',isAuth,upload.array('image', 5),isValidObjectId('/
 // menghapus data motor berdasarkan ID dalam bentuk JSON
 // router.delete('/:id',isAuth,isAuthorMotor,isValidObjectId('/motors'), wrapAsync(constrollersMotor.destroy));
 // menghapus data motor berdasarkan ID dalam bentuk JSON
-router.delete('/:id',isAuth,isAuthorMotor,isValidObjectId('/motors'), wrapAsync(constrollersMotor.destroy));
+router.delete('/:id/deleted',isAuth,isAuthorMotor,isValidObjectId('/motors'), wrapAsync(constrollersMotor.destroy));
 
 module.exports = router;
