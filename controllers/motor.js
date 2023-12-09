@@ -83,6 +83,7 @@ module.exports.edit = async (req, res) => {
     const motor = await Motor.findById(req.params.id);
     res.json({ message: 'Halaman edit', motor });
 };
+
 module.exports.update = async (req, res) => {
   const { id } = req.params;
 
@@ -121,15 +122,30 @@ module.exports.update = async (req, res) => {
   //      filename: file.filename
   //  }));
 
-module.exports.destroy = async (req, res) => {
-  const {id} = req.params
-  const motor =  await Motor.findById(id)
-  if(motor.imageURL.length >0 ){
-    motor.imageURL.forEach(image =>{
-      fs.unlink(imageURL, err => new ExpressError(err))
-    })
-   }
-   await motor.deleteOne();
-   req.flash('success_msg','Data berhasil dihapus')
-    res.json({ message: 'Motor deleted successfully' });
-}
+  module.exports.destroy = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const motor = await Motor.findById(id);
+  
+      if (!motor) {
+        return res.status(404).json({ error: 'Motor not found' });
+      }
+  
+      if (motor.imageURL.length > 0) {
+        // Use the 'unlink' method with the correct path
+        await Promise.all(
+          motor.imageURL.map(async (image) => {
+            await fs.unlink(image);
+          })
+        );
+      }
+  
+      await motor.deleteOne();
+  
+      req.flash('success_msg', 'Data berhasil dihapus');
+      res.json({ message: 'Motor deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting motor:', error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };

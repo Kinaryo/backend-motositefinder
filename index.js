@@ -97,7 +97,7 @@ app.get('/home', (req, res) => {
 });
 app.use('/',require('./routes/auth') )
 app.use('/motors',require('./routes/motor'))
-app.use('/motors/:motor_id/comments',require('./routes/comment'))
+app.use('/motors/:motor_id/',require('./routes/comment'))
 app.all('*', (req, res, next) => {
     next(new ErrorHandler('Page not Found', 404));
 });
