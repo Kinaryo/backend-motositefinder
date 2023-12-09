@@ -18,8 +18,7 @@ router.post('/login', passport.authenticate('local'
     // failureRedirect: '/login',
     // failureFlash: {
     //     type: 'error_msg',
-    //     msg: 'Masukkan password atau username dengan benar',
-    ,
+    //     msg: 'Masukkan password atau username dengan benar',,
 ), controllersAuth.login )
 // Logout
 router.post('/logout', controllersAuth.logout);
