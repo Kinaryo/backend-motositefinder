@@ -48,7 +48,8 @@ const { Server } = require('http');
 const corsOptions = {
     origin : ['*'],
     method : ['*'],
-    allowedHeaders : ['*']
+    allowedHeaders : ['*'],
+    credentials :true
 }
 
 app.use(cors(corsOptions));
