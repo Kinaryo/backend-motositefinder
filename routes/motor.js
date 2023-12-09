@@ -22,13 +22,13 @@ router.get('/', wrapAsync(constrollersMotor.index));
 router.get('/detail/:id',isValidObjectId('/motors'),wrapAsync(constrollersMotor.detail));
 // menuju halaman new data motor 
 // router.get('/create/', isAuth, constrollersMotor.form ) 
-router.get('/create/', constrollersMotor.form ) 
+router.get('/create/', isAuth, constrollersMotor.form ) 
 // Menambahkan data motor baru dalam bentuk JSON
 // router.post('/create/upload',isAuth, upload.single('image'),validateMotor,wrapAsync( constrollersMotor.store));
-router.post('/create/upload',upload.array('image', 5),wrapAsync( constrollersMotor.store));
+router.post('/create/upload',isAuth, upload.array('image', 5),wrapAsync( constrollersMotor.store));
 // masuk halaman edit
 // router.get('/:id/edit',isAuth,isAuthorMotor, isValidObjectId('/motors'),wrapAsync(constrollersMotor.edit))
-router.get('/:id/edit', isValidObjectId('/motors'),wrapAsync(constrollersMotor.edit))
+router.get('/:id/edit',isAuth,isAuthorMotor, isValidObjectId('/motors'),wrapAsync(constrollersMotor.edit))
 // Mengupdate data motor berdasarkan ID dalam bentuk JSON
 // router.put('/:id/edit/update',isAuth,upload.array('image',5),isAuthorMotor,isValidObjectId('/motors'), validateMotor, wrapAsync(constrollersMotor.update));
 router.put('/:id/edit/update',isAuth,upload.array('image', 5),isValidObjectId('/motors'), validateMotor, wrapAsync(constrollersMotor.update));
