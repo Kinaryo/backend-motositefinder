@@ -15,11 +15,11 @@ const router = express.Router();
 
 
 
-router.get('/search', wrapAsync(constrollersMotor.search));
+router.get('/search', isAuth,wrapAsync(constrollersMotor.search));
 //  mendapatkan semua data motor dalam bentuk JSON
-router.get('/', wrapAsync(constrollersMotor.index));
+router.get('/', isAuth,wrapAsync(constrollersMotor.index));
 // mendapatkan detail motor berdasarkan ID dalam bentuk JSON
-router.get('/detail/:id',isValidObjectId('/motors'),wrapAsync(constrollersMotor.detail));
+router.get('/detail/:id', isAuth, isValidObjectId('/motors'),wrapAsync(constrollersMotor.detail));
 // menuju halaman new data motor 
 // router.get('/create/', isAuth, constrollersMotor.form ) 
 router.get('/create/', isAuth, constrollersMotor.form ) 
