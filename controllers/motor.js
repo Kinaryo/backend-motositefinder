@@ -185,35 +185,33 @@ module.exports.update = async (req, res) => {
 
   module.exports.destroy = async (req, res) => {
     try {
-        const { id } = req.params;
-        const motor = await Motor.findById(id);
-
-        if (!motor) {
-            return res.status(404).json({ error: 'Motor tidak ditemukan' });
-        }
-
-        // Pastikan motor.imageURL adalah array sebelum mencoba mengiterasinya
-        if (Array.isArray(motor.imageURL) && motor.imageURL.length > 0) {
-            await Promise.all(
-                motor.imageURL.map(async (image) => {
-                    try {
-                        await fs.unlink(image);
-                    } catch (unlinkError) {
-                        // Tangani error unlink, misalnya log error tersebut
-                        console.error(`Error unlinking image: ${unlinkError.message}`);
-                        // Lanjutkan dengan mengirim pesan error ke klien
-                        return res.status(500).json({ error: 'Error Server Internal' });
-                    }
-                })
-            );
-        }
-
-        await motor.deleteOne();
-
-        req.flash('success_msg', 'Data berhasil dihapus');
-        res.json({ message: 'Motor berhasil dihapus' });
+      const { id } = req.params;
+      const motor = await Motor.findById(id);
+  
+      if (!motor) {
+        return res.status(404).json({ error: 'Motor tidak ditemukan' });
+      }
+  
+      // Pastikan motor.imageURL adalah array sebelum mencoba mengiterasinya
+      if (Array.isArray(motor.imageURL) && motor.imageURL.length > 0) {
+        await Promise.all(
+          motor.imageURL.map(async (image) => {
+            try {
+              await fs.unlink(image);
+            } catch (unlinkError) {
+              // Tangani error unlink, misalnya log error tersebut
+              console.error(`Error unlinking image: ${unlinkError.message}`);
+            }
+          })
+        );
+      }
+  
+      await motor.deleteOne();
+  
+      req.flash('success_msg', 'Data berhasil dihapus');
+      res.json({ message: 'Motor berhasil dihapus' });
     } catch (error) {
-        console.error('Error menghapus motor:', error.message);
-        res.status(500).json({ error: 'Error Server Internal' });
+      console.error('Error menghapus motor:', error.message);
+      res.status(500).json({ error: 'Error Server Internal' });
     }
-};
+  };
