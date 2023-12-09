@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const User = require('../models/user');
-
+const Motor  = require('../models/motor');
 module.exports.registerForm = async (req, res) => {
     res.status(200).json({ message: 'Render registration form' });
 }
@@ -30,9 +30,6 @@ module.exports.loginForm = (req, res) => {
 //     res.status(200).json({ success: true, message: 'Login berhasil' });
 // };
 
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const { User, Motor } = require('../models');
 
 module.exports.login = async (req, res) => {
     const { username, password } = req.body;
