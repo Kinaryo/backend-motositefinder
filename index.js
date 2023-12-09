@@ -48,11 +48,12 @@ const { Server } = require('http');
 const corsOptions = {
     origin : ['*'],
     method : ['*'],
-    allowedHeaders : ['Content-type', 'Authorization']
+    allowedHeaders : ['*']
 }
 
-
 app.use(cors(corsOptions));
+
+
 app.use(bodyParser.json());
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
