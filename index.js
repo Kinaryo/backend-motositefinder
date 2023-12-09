@@ -14,7 +14,7 @@ const bodyParser = require('body-parser');
 const wrapAsync = require('./utils/wrapAsync');
 const isValidObjectId = require('./middlewares/isValidObjectId')
 const passport = require('passport')
-const LocalStrategy = require('passport-local')
+const LocalStrategy = require('passport-local').Strategy;
 // models
 const User =require('./models/user')
 // localhost 
