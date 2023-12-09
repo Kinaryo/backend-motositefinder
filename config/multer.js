@@ -1,7 +1,7 @@
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('cloudinary').v2;
-const ExpressError = require('../utils/ErrorHandler');
+const ExpressError = require('../utils/ErrorHandler'); // Sesuaikan dengan modul kesalahan yang sesuai
 
 // Konfigurasi Cloudinary
 cloudinary.config({
@@ -22,8 +22,8 @@ const upload = multer({
         if (file.mimetype.startsWith('image/')) {
             cb(null, true);
         } else {
-            cb(new ExpressError('only images are allowed.', 405));
-            return cb(error);
+            const error = new ExpressError('Hanya gambar yang diizinkan.', 405);
+            cb(error);
         }
     }
 });

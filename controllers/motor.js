@@ -54,16 +54,39 @@ module.exports.form = (req, res) => {
 
 module.exports.store = async (req, res) => {
   try {
-    const imageUrl = req.file.path;
-    const motor = new Motor(req.body.motor);
-    motor.imageURL = imageUrl;
+    // Dapatkan semua URL gambar dari req.files jika ada
+    const imageUrls = req.files.map((file) => file.path);
+
+    // Buat objek Motor dengan data dari req.body.motor
+    const motorData = { ...req.body.motor, imageURL: imageUrls };
+
+    // Buat instance Motor
+    const motor = new Motor(motorData);
+
+    // Simpan motor ke MongoDB
     await motor.save();
+
     res.json({ motor });
   } catch (error) {
     console.error('Error storing motor:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+
+
+// module.exports.store = async (req, res) => {
+//   try {
+//     const imageUrl = req.file.path;
+//     const motor = new Motor(req.body.motor);
+//     motor.imageURL = imageUrl;
+//     await motor.save();
+//     res.json({ motor });
+//   } catch (error) {
+//     console.error('Error storing motor:', error.message);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
 // async (req, res) => {
 //   const images = req.files.map(file =>({
 //     url : file.path,
@@ -84,6 +107,34 @@ module.exports.edit = async (req, res) => {
     res.json({ message: 'Halaman edit', motor });
 };
 
+// module.exports.update = async (req, res) => {
+//   const { id } = req.params;
+
+//   try {
+//     let motor = await Motor.findById(id);
+
+//     if (!motor) {
+//       return res.status(404).json({ error: 'Motor not found' });
+//     }
+
+//     motor.set(req.body.motor); // Use set method to update the motor object
+
+//     // Check if req.file is defined before accessing its properties
+//     if (req.file && req.file.path) {
+//       const imageUrl = req.file.path;
+//       motor.imageURL = imageUrl;
+//     }
+
+//     await motor.save();
+
+//     req.flash('success_msg', 'Anda berhasil meng-update data');
+//     res.json({ message: 'Motor updated successfully', motor });
+//   } catch (error) {
+//     console.error('Error updating motor:', error.message);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
+
 module.exports.update = async (req, res) => {
   const { id } = req.params;
 
@@ -94,23 +145,32 @@ module.exports.update = async (req, res) => {
       return res.status(404).json({ error: 'Motor not found' });
     }
 
-    motor.set(req.body.motor); // Use set method to update the motor object
+    // Update data motor menggunakan set method
+    motor.set(req.body.motor);
 
     // Check if req.file is defined before accessing its properties
     if (req.file && req.file.path) {
-      const imageUrl = req.file.path;
-      motor.imageURL = imageUrl;
+      const newImageUrl = req.file.path;
+      motor.imageURL = newImageUrl;
     }
 
+    // Simpan perubahan ke MongoDB
     await motor.save();
 
-    req.flash('success_msg', 'Anda berhasil meng-update data');
+    // Flash message dapat ditampilkan melalui antarmuka pengguna (frontend)
+    req.flash('success_msg', 'Data motor berhasil di-update');
+
+    // Respon JSON dengan informasi motor yang telah di-update
     res.json({ message: 'Motor updated successfully', motor });
   } catch (error) {
     console.error('Error updating motor:', error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
+
+    // Tanggapan kesalahan dengan lebih rinci
+    res.status(500).json({ error: 'Failed to update motor', details: error.message });
   }
 };
+
+
 
 
   // if(req.files && req.files.length >0 ){
@@ -128,11 +188,11 @@ module.exports.update = async (req, res) => {
       const motor = await Motor.findById(id);
   
       if (!motor) {
-        return res.status(404).json({ error: 'Motor not found' });
+        return res.status(404).json({ error: 'Motor tidak ditemukan' });
       }
   
-      if (motor.imageURL.length > 0) {
-        // Use the 'unlink' method with the correct path
+      // Pastikan motor.imageURL adalah array sebelum mencoba mengiterasinya
+      if (Array.isArray(motor.imageURL) && motor.imageURL.length > 0) {
         await Promise.all(
           motor.imageURL.map(async (image) => {
             await fs.unlink(image);
@@ -143,9 +203,9 @@ module.exports.update = async (req, res) => {
       await motor.deleteOne();
   
       req.flash('success_msg', 'Data berhasil dihapus');
-      res.json({ message: 'Motor deleted successfully' });
+      res.json({ message: 'Motor berhasil dihapus' });
     } catch (error) {
-      console.error('Error deleting motor:', error.message);
-      res.status(500).json({ error: 'Internal Server Error' });
+      console.error('Error menghapus motor:', error.message);
+      res.status(500).json({ error: 'Error Server Internal' });
     }
   };
