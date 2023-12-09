@@ -33,6 +33,7 @@ router.get('/:id/edit', isValidObjectId('/motors'),wrapAsync(constrollersMotor.e
 // router.put('/:id/edit/update',isAuth,upload.array('image',5),isAuthorMotor,isValidObjectId('/motors'), validateMotor, wrapAsync(constrollersMotor.update));
 router.put('/:id/edit/update',upload.single('image'),isValidObjectId('/motors'), validateMotor, wrapAsync(constrollersMotor.update));
 // menghapus data motor berdasarkan ID dalam bentuk JSON
-router.delete('/:id',isAuth,isAuthorMotor,isValidObjectId('/motors'), wrapAsync(constrollersMotor.destroy));
+// router.delete('/:id',isAuth,isAuthorMotor,isValidObjectId('/motors'), wrapAsync(constrollersMotor.destroy));
+router.delete('/:id',isValidObjectId('/motors'), wrapAsync(constrollersMotor.destroy));
 
 module.exports = router;
