@@ -1,7 +1,7 @@
-const bcrypt = require('bcrypt');
+
 const jwt = require('jsonwebtoken')
 const User = require('../models/user');
-const Motor  = require('../models/motor');
+
 module.exports.registerForm = async (req, res) => {
     res.status(200).json({ message: 'Render registration form' });
 }
@@ -30,56 +30,15 @@ module.exports.loginForm = (req, res) => {
 //     res.status(200).json({ success: true, message: 'Login berhasil' });
 // };
 
-
 module.exports.login = async (req, res) => {
-    const { username, password } = req.body;
+    // Jika autentikasi berhasil, buat token JWT
+    const payload = { user_id: req.user._id, username: req.user.username };
+    const secretKey = 'motositefindr123'; // Ganti dengan kunci rahasia yang aman
+    const token = jwt.sign(payload, secretKey, { expiresIn: '1h' }); // Tambahkan opsi expiresIn jika diperlukan
 
-    try {
-        const user = await User.findOne({ username });
-
-        if (!user) {
-            return res.status(404).json({
-                status: "Failed",
-                msg: `Username not registered`
-            });
-        }
-
-        const isValidPassword = bcrypt.compareSync(password, user.password);
-
-        if (isValidPassword) {
-            const payload = {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                username: user.username,
-            };
-
-            const secretKey = 'motositefindr123';
-            const token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
-
-            // Query Motor setelah berhasil login (contoh)
-            const motors = await Motor.find({ userId: user.id }, { id: 1, title: 1 });
-
-            res.status(200).json({
-                success: true,
-                message: 'Login berhasil',
-                token,
-                motors
-            });
-        } else {
-            res.status(401).json({
-                status: "Failed",
-                msg: `Invalid password`
-            });
-        }
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-};
-
+    // Kirim token sebagai respons
+    res.status(200).json({ success: true, message: 'Login berhasil', token });
+}
 
 
 
