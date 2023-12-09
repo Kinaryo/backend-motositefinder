@@ -15,6 +15,14 @@ module.exports.store = async (req, res) => {
     res.json({ message: 'Success add comment', motor });
 }
 
+// module.exports.destroy = async (req, res) => {
+//     const { motor_id, comment_id } = req.params;
+//     await Motor.findByIdAndUpdate(motor_id, { $pull: { comments: { _id: comment_id } } });
+//     await Comment.findByIdAndDelete(comment_id);
+//     const msg = req.flash('success_msg','comment berhasil dihapus')
+//     res.json({message: `Success Delete Comment`, Motor})
+// }
+
 module.exports.destroy = async (req, res) => {
     const { motor_id, comment_id } = req.params;
   
@@ -31,7 +39,7 @@ module.exports.destroy = async (req, res) => {
         return res.status(404).json({ error: 'Komentar tidak ditemukan' });
       }
   
-      await Comment.findByIdAndRemove(comment_id);
+      await Comment.findByIdAndDelete(comment_id);
   
       // Hapus komentar dari array komentar pada objek motor
       motor.comments.pull({ _id: comment_id });
