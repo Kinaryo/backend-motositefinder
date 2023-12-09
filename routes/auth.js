@@ -14,13 +14,13 @@ router.post('/register', wrapAsync(controllersAuth.register));
 // Login
 router.get('/login', controllersAuth.loginForm);
 
-router.post('/login', passport.authenticate('local', {
-    failureRedirect: '/login',
-    failureFlash: {
-        type: 'error_msg',
-        msg: 'Masukkan password atau username dengan benar',
-    },
-}), controllersAuth.login )
+router.post('/login', passport.authenticate('local'
+    // failureRedirect: '/login',
+    // failureFlash: {
+    //     type: 'error_msg',
+    //     msg: 'Masukkan password atau username dengan benar',
+    ,
+), controllersAuth.login )
 // Logout
 router.post('/logout', controllersAuth.logout);
 
