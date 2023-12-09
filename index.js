@@ -45,14 +45,14 @@ const { motorSchema } = require('./schemas/motor');
 const { commentSchema } = require('./schemas/comment'); // Fixed import path
 const { Server } = require('http');
 
-const corsOptions = {
-    origin : ['*'],
-    method : ['*'],
-    allowedHeaders : ['*'],
-    credentials :true
-}
+// const corsOptions = {
+//     origin : ['*'],
+//     method : ['*'],
+//     allowedHeaders : ['*'],
+//     credentials :true
+// }
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 
 app.use(bodyParser.json());
