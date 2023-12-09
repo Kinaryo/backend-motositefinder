@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken')
 const User = require('../models/user');
 
 module.exports.registerForm = async (req, res) => {
@@ -24,9 +25,35 @@ module.exports.loginForm = (req, res) => {
     res.status(200).json({ message: 'Render login form' });
 }
 
-module.exports.login = (req, res) => {
-    res.status(200).json({ success: true, message: 'Login berhasil' });
+// module.exports.login = (req, res) => {
+//     res.status(200).json({ success: true, message: 'Login berhasil' });
+// };
+
+module.exports.login = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Lakukan proses autentikasi user
+        const user = await User.findOne({ username });
+        if (!user || !(await user.verifyPassword(password))) {
+            return res.status(401).json({ success: false, message: 'Username atau password salah' });
+        }
+
+        // Jika autentikasi berhasil, buat token JWT
+        const payload = { user_id: user._id, username: user.username };
+        const secretKey = 'motositefindr123'; // Ganti dengan kunci rahasia yang aman
+        const token = jwt.sign(payload, secretKey, { expiresIn: '1h' }); // Tambahkan opsi expiresIn jika diperlukan
+
+        // Kirim token sebagai respons
+        res.status(200).json({ success: true, message: 'Login berhasil', token });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
 };
+
+
+
+
 
 module.exports.logout = (req, res) => {
     req.logout(function (err) {
