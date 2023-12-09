@@ -12,9 +12,9 @@ const motorSchema = new Schema ({
         type: Date, // Pastikan tipe datanya adalah Date
         default: Date.now,
       },
-      imageURL: {
-        type: String,
-    },
+      imageURL: [{
+        type: String}],
+
     author : {
       type: Schema.Types.ObjectId,
       ref: 'User',
