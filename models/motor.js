@@ -9,8 +9,14 @@ const motorSchema = new Schema ({
     model:String,
     description: String,
     dateTime: {
-        type: Date, // Pastikan tipe datanya adalah Date
-        default: Date.now,
+      type: String, // Menggunakan tipe String
+      default: () => {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = currentDate.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      },
       },
       imageURL: [{
         type: String}],
